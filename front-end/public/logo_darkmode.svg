@@ -1,0 +1,10 @@
+<!-- geniq-logo-dark.svg -->
+<svg width="180" height="60" viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg">
+  <rect width="300" height="100" rx="15" fill="#0F172A"/>
+  <text x="20" y="65" font-family="Segoe UI, sans-serif" font-size="60" font-weight="700" fill="#818CF8">
+    Gen
+  </text>
+  <text x="135" y="65" font-family="Segoe UI, sans-serif" font-size="60" font-weight="700" fill="#F8FAFC">
+    IQ
+  </text>
+</svg>
