@@ -1,8 +1,11 @@
-import React from 'react'
+import HomePage from './modules/landing/pages/HomePage'
+import AppRoutes from './shared/routes/AppRoutes'
 
 const App = () => {
   return (
-    <div>App</div>
+    <div>
+      <AppRoutes></AppRoutes>
+    </div>
   )
 }
 
