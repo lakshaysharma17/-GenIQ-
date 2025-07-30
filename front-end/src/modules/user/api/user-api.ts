@@ -13,7 +13,6 @@ export const doRegister = (userData:unknown)=>{
 }
 export const doLogin = (userData:unknown)=>{
     console.log('API_BASE_URL ', API_BASE_URL, 'User Data is ', userData);
-   
-   
+
     return axios.post('login', userData); // Promise
 }
