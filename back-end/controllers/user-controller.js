@@ -1,129 +1,125 @@
-import {register as registerUser} from '../services/user-service.js';
-import {login as loginUser} from '../services/user-service.js';
+import { register as registerUser, login as loginUser, getUserById } from '../services/user-service.js';
+import { encryptPassword, compareHash } from '../utils/services/password-hash.js';
 import { generateToken } from '../utils/services/token.js';
 
 export const login = async (req, res) => {
-    console.log("Login request body:", req.body);
-    
-    try {
-        const userObject = req.body;
-        
-        // Validate required fields
-        if (!userObject.email || !userObject.password) {
-            return res.status(400).json({
-                message: 'Email and password are required'
-            });
-        }
+  try {
+    const { email, password } = req.body;
 
-        // Attempt to login user
-        const user = await loginUser(userObject);
-        
-        if (!user) {
-            return res.status(401).json({
-                message: 'Invalid credentials'
-            });
-        }
-
-        // Generate JWT token
-        const token = generateToken({ 
-            id: user._id,
-            email: user.email, 
-            role: user.role 
-        });
-
-        console.log("Login successful for user:", user.email);
-        console.log("Generated token:", token);
-
-        res.status(200).json({
-            message: 'Login successful',
-            token: token,
-            role: user.role,
-            user: {
-                id: user._id,
-                name: user.name,
-                email: user.email,
-                role: user.role
-            }
-        });
-
-    } catch (error) {
-        console.error("Login error:", error);
-        
-        // Handle specific errors
-        if (error.message === 'Invalid credentials') {
-            return res.status(401).json({
-                message: 'Invalid email or password'
-            });
-        }
-        
-        res.status(500).json({
-            message: 'Internal server error during login'
-        });
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email and password are required'
+      });
     }
+
+    const user = await loginUser({ email, password });
+
+    const token = generateToken({
+      userId: user._id,
+      email: user.email,
+      role: user.role
+    });
+
+    res.status(200).json({
+      success: true,
+      message: 'Login successful',
+      data: {
+        user: {
+          id: user._id,
+          email: user.email,
+          role: user.role
+        },
+        token: token
+      }
+    });
+  } catch (error) {
+    console.error('Login error:', error.message);
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error'
+    });
+  }
 };
 
 export const register = async (req, res) => {
-    console.log('Register request body:', req.body);
-    
-    try {
-        const userObject = req.body;
-        
-        // Validate required fields
-        if (!userObject.name || !userObject.email || !userObject.password) {
-            return res.status(400).json({
-                message: 'Name, email and password are required'
-            });
-        }
+  try {
+    const { email, password, name } = req.body;
 
-        // Attempt to register user
-        const result = await registerUser(userObject);
-        
-        console.log("Registration successful for:", userObject.email);
-        
-        res.status(201).json({
-            message: result || 'User registered successfully'
-        });
-
-    } catch (error) {
-        console.error("Registration error:", error);
-        
-        // Handle specific errors
-        if (error.code === 11000) {
-            return res.status(409).json({
-                message: 'Email already exists'
-            });
-        }
-        
-        if (error.message.includes('validation')) {
-            return res.status(400).json({
-                message: 'Invalid user data provided'
-            });
-        }
-        
-        res.status(500).json({
-            message: 'Internal server error during registration'
-        });
+    if (!email || !password || !name) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email, password, and name are required'
+      });
     }
+
+    const userData = {
+      email,
+      password,
+      name,
+      role: 'user'
+    };
+
+    await registerUser(userData);
+
+    // For registration, we need to get the user to generate token
+    const user = await loginUser({ email, password });
+
+    const token = generateToken({
+      userId: user._id,
+      email: user.email,
+      role: user.role
+    });
+
+    res.status(201).json({
+      success: true,
+      message: 'User registered successfully',
+      data: {
+        user: {
+          id: user._id,
+          email: user.email,
+          role: user.role
+        },
+        token: token
+      }
+    });
+  } catch (error) {
+    console.error('Registration error:', error.message);
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error'
+    });
+  }
 };
 
 export const profile = async (req, res) => {
-    try {
-        // req.user should be populated by auth middleware
-        if (!req.user) {
-            return res.status(401).json({
-                message: 'Unauthorized'
-            });
-        }
+  try {
+    const userId = req.user.userId;
+    const user = await getUserById(userId);
 
-        res.status(200).json({
-            message: 'Profile retrieved successfully',
-            user: req.user
-        });
-
-    } catch (error) {
-        console.error("Profile error:", error);
-        res.status(500).json({
-            message: 'Error retrieving profile'
-        });
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
     }
+
+    res.status(200).json({
+      success: true,
+      data: {
+        user: {
+          id: user._id,
+          email: user.email,
+          name: user.name,
+          role: user.role
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Profile fetch error:', error.message);
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error'
+    });
+  }
 };

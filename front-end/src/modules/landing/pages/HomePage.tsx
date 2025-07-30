@@ -1,17 +1,19 @@
 import React from 'react'
 import Header from '../components/Header'
 import HeroSection from '../components/HeroSection'
-import Pricing from '../components/Pricing'
 import Footer from '../components/Footer'
 import FeaturesSection from '../components/FeatureSection'
+import About from '../components/About'
+import Contact from '../components/Contact'
 
 const HomePage = () => {
   return (
     <div>
       <Header />
       <HeroSection />
-      <FeaturesSection></FeaturesSection>
-      <Pricing />
+      <FeaturesSection />
+      <About />
+      <Contact />
       <Footer />
     </div>
   )

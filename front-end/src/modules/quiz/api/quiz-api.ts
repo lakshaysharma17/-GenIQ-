@@ -1,18 +1,35 @@
 import axios from 'axios';
 
+const QUIZ_API = import.meta.env.VITE_API_QUIZ_BASE_URL;
+
 export const createQuiz = (quizData: unknown) => {
-  return axios.post("/api/v1/quiz/create", quizData);
+  return axios.post(`${QUIZ_API}/create`, quizData, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+    },
+  });
 };
 
 export const getAllQuizzes = () => {
-  axios.defaults.headers['Authorization'] = localStorage.token;
-  return axios.get("/api/v1/quiz/all");
+  return axios.get(`${QUIZ_API}/all`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+    },
+  });
 };
 
 export const getQuizById = (quizId: string) => {
-  return axios.get(`/api/v1/quiz/attempt/${quizId}`);
+  return axios.get(`${QUIZ_API}/attempt/${quizId}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+    },
+  });
 };
 
 export const submitQuiz = (quizId: string, answers: string[]) => {
-  return axios.post(`/api/v1/quiz/submit/${quizId}`, { answers });
+  return axios.post(`${QUIZ_API}/submit/${quizId}`, { answers }, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+    },
+  });
 };

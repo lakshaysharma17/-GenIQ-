@@ -1,6 +1,6 @@
 import React from 'react';
 import { 
-  Brain, 
+  Edit3, 
   Trophy, 
   Users, 
   Zap, 
@@ -20,81 +20,71 @@ import {
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-// Header Component
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 shadow-sm">
       <div className="container flex h-16 items-center justify-between px-4">
-        {/* Logo */}
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-3">
           <div className="relative">
-            <Brain className="h-8 w-8 text-primary" />
-            <div className="absolute -top-1 -right-1 h-3 w-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full animate-pulse"></div>
+            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+              <Edit3 className="h-6 w-6 text-white" />
+            </div>
+            <div className="absolute -top-1 -right-1 h-3 w-3 bg-green-500 rounded-full"></div>
           </div>
-          <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            GIQ
+          <span className="text-2xl font-bold text-blue-600">
+            QuizMaster
           </span>
         </div>
 
-        {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
-          <a href="#features" className="text-sm font-medium hover:text-primary transition-colors">
+          <a href="#features" className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors duration-200">
             Features
           </a>
-          <a href="#pricing" className="text-sm font-medium hover:text-primary transition-colors">
-            Pricing
-          </a>
-          <a href="#about" className="text-sm font-medium hover:text-primary transition-colors">
+          <a href="#about" className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors duration-200">
             About
           </a>
-          <a href="#contact" className="text-sm font-medium hover:text-primary transition-colors">
+          <a href="#contact" className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors duration-200">
             Contact
           </a>
         </nav>
 
-        {/* Desktop CTA */}
         <div className="hidden md:flex items-center space-x-4">
-          <Link to="/login" className="text-sm font-medium hover:text-primary transition-colors">
+          <Link to="/login" className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors duration-200">
             Sign In
           </Link>
-          <Link to="/register" className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
+          <Link to="/register" className="inline-flex items-center justify-center rounded-lg text-sm font-medium bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-200 h-10 px-6 py-2 shadow-md">
             Get Started
             <ArrowRight className="ml-2 h-4 w-4" />
           </Link>
         </div>
 
-        {/* Mobile Menu Button */}
         <button
-          className="md:hidden"
+          className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
           {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
       </div>
 
-      {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden border-t bg-background">
+        <div className="md:hidden border-t bg-white/95 backdrop-blur">
           <div className="container py-4 px-4 space-y-4">
-            <a href="#features" className="block text-sm font-medium hover:text-primary transition-colors">
+            <a href="#features" className="block text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors duration-200">
               Features
             </a>
-            <a href="#pricing" className="block text-sm font-medium hover:text-primary transition-colors">
-              Pricing
-            </a>
-            <a href="#about" className="block text-sm font-medium hover:text-primary transition-colors">
+            <a href="#about" className="block text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors duration-200">
               About
             </a>
-            <a href="#contact" className="block text-sm font-medium hover:text-primary transition-colors">
+            <a href="#contact" className="block text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors duration-200">
               Contact
             </a>
-            <div className="pt-4 space-y-2">
-              <Link  to="/login" className="w-full text-left text-sm font-medium hover:text-primary transition-colors">
+            <div className="pt-4 space-y-3 border-t">
+              <Link to="/login" className="block text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors duration-200">
                 Sign In
               </Link>
-              <Link to="/register" className="w-full inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
+              <Link to="/register" className="inline-flex items-center justify-center rounded-lg text-sm font-medium bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-200 w-full h-10 px-6 py-2 shadow-md">
                 Get Started
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
@@ -106,4 +96,4 @@ const Header = () => {
   );
 };
 
-export default Header
+export default Header;

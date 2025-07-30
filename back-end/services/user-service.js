@@ -1,27 +1,18 @@
 import { UserModel } from '../models/user-model.js';
-import bcrypt from 'bcryptjs';
-
+import { compareHash, encryptPassword } from '../utils/services/password-hash.js';
 export const register = async (userObject) => {
     try {
-        const { name, email, password, role = 'user' } = userObject;
-
         // Check if user already exists
-        const existingUser = await UserModel.findOne({ email });
+        const existingUser = await UserModel.findOne({ email: userObject.email });
         if (existingUser) {
             throw new Error('User with this email already exists');
         }
 
-        // Hash the password
-        const saltRounds = 10;
-        const hashedPassword = await bcrypt.hash(password, saltRounds);
+        // Encrypt password
+        userObject.password = encryptPassword(userObject.password);
 
         // Create new user
-        const newUser = new UserModel({
-            name,
-            email,
-            password: hashedPassword,
-            role
-        });
+        const newUser = new UserModel(userObject);
 
         // Save user to database
         const savedUser = await newUser.save();
@@ -46,7 +37,7 @@ export const login = async (userObject) => {
         }
 
         // Compare password
-        const isPasswordValid = await bcrypt.compare(password, user.password);
+        const isPasswordValid = compareHash(password, user.password);
         if (!isPasswordValid) {
             throw new Error('Invalid credentials');
         }

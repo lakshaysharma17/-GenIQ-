@@ -34,7 +34,7 @@ const Login = () => {
     },
   });
 
-  const loginSubmit = async (userData) => {
+  const loginSubmit = async (userData:any) => {
     setIsLoading(true);
     setError("");
     
@@ -44,13 +44,14 @@ const Login = () => {
       console.log("Login result:", result);
 
       // Check if login was successful
-      if (result.data && result.data.token) {
+      if (result.data && result.data.success && result.data.data && result.data.data.token) {
         // Store token and role in localStorage
-        localStorage.setItem("token", result.data.token);
-        localStorage.setItem("role", result.data.role);
+        localStorage.setItem("token", result.data.data.token);
+        localStorage.setItem("role", result.data.data.user.role);
+        localStorage.setItem("user", JSON.stringify(result.data.data.user));
         
-        console.log("Token stored:", result.data.token);
-        console.log("Role stored:", result.data.role);
+        console.log("Token stored:", result.data.data.token);
+        console.log("Role stored:", result.data.data.user.role);
         
         // Navigate to dashboard
         navigate("/dashboard");

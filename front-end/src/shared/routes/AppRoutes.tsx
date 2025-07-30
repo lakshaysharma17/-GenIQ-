@@ -21,6 +21,7 @@ const AppRoutes = () => {
         <Route path="/quiz/create" element={<QuizForm />} />
         <Route path="/quiz/list" element={<QuizList />} />
         <Route path="/quiz/attempt/:id" element={<AttemptQuiz />} />
+        <Route path="/quizzes" element={<QuizList />} />
       </Routes>
     </>
   );
