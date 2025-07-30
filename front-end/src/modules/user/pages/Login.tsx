@@ -14,10 +14,13 @@ import { loginSchema } from "../validations/login-validation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { doLogin } from "../api/user-api";
-import { toast } from "sonner"; // ✅ import toast
+import { useState } from "react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const Login = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const {
     register,
@@ -31,23 +34,46 @@ const Login = () => {
     },
   });
 
-  const loginSubmit = async (userData: unknown) => {
+  const loginSubmit = async (userData) => {
+    setIsLoading(true);
+    setError("");
+    
     try {
+      console.log("Submitting login data:", userData);
       const result = await doLogin(userData);
-      console.log("Login result", result);
+      console.log("Login result:", result);
 
-      if (result.data?.token) {
+      // Check if login was successful
+      if (result.data && result.data.token) {
+        // Store token and role in localStorage
         localStorage.setItem("token", result.data.token);
         localStorage.setItem("role", result.data.role);
-
-        toast.success("Login successful!");
+        
+        console.log("Token stored:", result.data.token);
+        console.log("Role stored:", result.data.role);
+        
+        // Navigate to dashboard
         navigate("/dashboard");
       } else {
-        toast.error(result.data?.message || "Login failed. Try again.");
+        // Handle login failure
+        setError(result.data?.message || "Login failed. Please check your credentials.");
       }
     } catch (error) {
-      console.error("Login failed:", error);
-      toast.error("Something went wrong. Please try again.");
+      console.error("Login error:", error);
+      
+      // Handle different types of errors
+      if (error.response) {
+        // Server responded with error status
+        setError(error.response.data?.message || "Invalid credentials");
+      } else if (error.request) {
+        // Network error
+        setError("Network error. Please check your connection.");
+      } else {
+        // Other errors
+        setError("Something went wrong. Please try again.");
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -64,6 +90,12 @@ const Login = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          {error && (
+            <Alert variant="destructive" className="mb-4">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
+          
           <form className="space-y-4" onSubmit={handleSubmit(loginSubmit)}>
             <div className="grid gap-1">
               <Label htmlFor="email">Email</Label>
@@ -72,6 +104,7 @@ const Login = () => {
                 type="email"
                 id="email"
                 placeholder="Enter your email"
+                disabled={isLoading}
               />
               <span className="text-sm text-red-500">{errors.email?.message}</span>
             </div>
@@ -82,11 +115,12 @@ const Login = () => {
                 type="password"
                 id="password"
                 placeholder="Enter your password"
+                disabled={isLoading}
               />
               <span className="text-sm text-red-500">{errors.password?.message}</span>
             </div>
-            <Button type="submit" className="w-full mt-4">
-              Login
+            <Button type="submit" className="w-full mt-4" disabled={isLoading}>
+              {isLoading ? "Logging in..." : "Login"}
             </Button>
           </form>
         </CardContent>

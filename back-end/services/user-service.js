@@ -1,34 +1,78 @@
-import { UserModel } from "../models/user-model.js";
-import { compareHash, encryptPassword } from "../utils/services/password-hash.js";
-import { generateToken } from "../utils/services/token.js";
-export const register = async (userObject) => {
-  try {
-    userObject.password = encryptPassword(userObject.password);
-    const doc = await UserModel.create(userObject);
-    if (doc && doc._id) {
-      return "User registered successfully";
-    }
-  } catch (error) {
-    throw error;
-  }
-};
-export const login = async (userObject) => {
-  try {
-    const doc = await UserModel.findOne({ email:userObject.email }).exec();
-    if (doc && doc.email) {
-      if ( compareHash(userObject.password, doc.password)) {
-        const token = generateToken(doc.email);
-        console.log("Token", token);
-        return {message:"Welcome"+doc.name,role:doc.role,token:token};
+import { UserModel } from '../models/user-model.js';
+import bcrypt from 'bcryptjs';
 
-      } else {
-        throw new Error("Invalid password");
-      }
+export const register = async (userObject) => {
+    try {
+        const { name, email, password, role = 'user' } = userObject;
+
+        // Check if user already exists
+        const existingUser = await UserModel.findOne({ email });
+        if (existingUser) {
+            throw new Error('User with this email already exists');
+        }
+
+        // Hash the password
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+        // Create new user
+        const newUser = new UserModel({
+            name,
+            email,
+            password: hashedPassword,
+            role
+        });
+
+        // Save user to database
+        const savedUser = await newUser.save();
+        console.log("User registered successfully:", savedUser.email);
+
+        return 'User registered successfully';
+
+    } catch (error) {
+        console.error("Registration service error:", error);
+        throw error;
     }
-    else{
-      return { error: true, message: "Invalid email or password" };
+};
+
+export const login = async (userObject) => {
+    try {
+        const { email, password } = userObject;
+
+        // Find user by email
+        const user = await UserModel.findOne({ email });
+        if (!user) {
+            throw new Error('Invalid credentials');
+        }
+
+        // Compare password
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            throw new Error('Invalid credentials');
+        }
+
+        console.log("User login successful:", user.email);
+
+        // Return user without password
+        return {
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role
+        };
+
+    } catch (error) {
+        console.error("Login service error:", error);
+        throw error;
     }
-  } catch (error) {
-    throw new Error("INvalid user Credentials");
-  }
+};
+
+export const getUserById = async (userId) => {
+    try {
+        const user = await UserModel.findById(userId).select('-password');
+        return user;
+    } catch (error) {
+        console.error("Get user by ID error:", error);
+        throw error;
+    }
 };
