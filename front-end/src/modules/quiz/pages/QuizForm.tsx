@@ -39,15 +39,25 @@ const QuizForm = () => {
 
   const onSubmit = async (data: QuizSchema) => {
     try {
+      console.log("Submitting quiz data:", data);
+      console.log("Number of questions:", data.questions.length);
+      console.log("Questions:", data.questions);
+      
       const res = await createQuiz(data);
+      console.log("Quiz creation response:", res);
+      
       if (res && res.data) {
+        console.log("Quiz saved successfully:", res.data);
         toast.success("Quiz Created Successfully!");
         reset();
       } else {
+        console.error("Server did not respond with data:", res);
         toast.error("Server did not respond with data.");
       }
     } catch (err: any) {
-      console.error("Quiz creation failed:", err?.response || err);
+      console.error("Quiz creation failed:", err);
+      console.error("Error response:", err?.response);
+      console.error("Error message:", err?.message);
       toast.error("Failed to create quiz.");
     }
   };

@@ -5,20 +5,19 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import QuizList from "@/modules/quiz/pages/QuizList";
 import Header from "@/shared/components/Header";
+import { getUserRole, clearAuth } from "@/shared/utils/auth";
 
 const Dashboard = () => {
   const [role, setRole] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedRole = localStorage.getItem("role");
-    setRole(storedRole);
+    const userRole = getUserRole();
+    setRole(userRole);
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('role');
-    localStorage.removeItem('user');
+    clearAuth();
     navigate('/');
   };
 

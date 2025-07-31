@@ -34,7 +34,7 @@ const Header = () => {
             <div className="absolute -top-1 -right-1 h-3 w-3 bg-green-500 rounded-full"></div>
           </div>
           <span className="text-2xl font-bold text-blue-600">
-            QuizMaster
+            Test Engine
           </span>
         </div>
 

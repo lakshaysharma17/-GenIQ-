@@ -1,8 +1,12 @@
 import axios from 'axios';
 
-const QUIZ_API = import.meta.env.VITE_API_QUIZ_BASE_URL;
+const QUIZ_API = import.meta.env.VITE_API_QUIZ_BASE_URL?.replace(/[%#]$/, '') || 'http://localhost:5500/api/v1/quiz';
 
 export const createQuiz = (quizData: unknown) => {
+  console.log("Quiz API URL:", QUIZ_API);
+  console.log("Full create URL:", `${QUIZ_API}/create`);
+  console.log("Request data:", quizData);
+  
   return axios.post(`${QUIZ_API}/create`, quizData, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token") || ""}`,

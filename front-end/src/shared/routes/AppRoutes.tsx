@@ -6,6 +6,8 @@ import Register from "@/modules/user/pages/Register";
 import QuizForm from "@/modules/quiz/pages/QuizForm";
 import QuizList from "@/modules/quiz/pages/QuizList";
 import AttemptQuiz from "@/modules/quiz/pages/AttemptQuiz";
+import ProtectedRoute from "@/shared/components/ProtectedRoute";
+import PublicRoute from "@/shared/components/PublicRoute";
 
 import { Routes, Route } from "react-router-dom";
 
@@ -14,14 +16,65 @@ const AppRoutes = () => {
     <>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<Login></Login>} />
-        <Route path="/register" element={<Register />} />
+        <Route 
+          path="/login" 
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          } 
+        />
+        <Route 
+          path="/register" 
+          element={
+            <PublicRoute>
+              <Register />
+            </PublicRoute>
+          } 
+        />
         <Route path="*" element={<NotFound />} />
-        <Route path="/dashboard" element={<Dashboard></Dashboard>} />
-        <Route path="/quiz/create" element={<QuizForm />} />
-        <Route path="/quiz/list" element={<QuizList />} />
-        <Route path="/quiz/attempt/:id" element={<AttemptQuiz />} />
-        <Route path="/quizzes" element={<QuizList />} />
+        
+        {/* Protected Routes */}
+        <Route 
+          path="/dashboard" 
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/quiz/create" 
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <QuizForm />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/quiz/list" 
+          element={
+            <ProtectedRoute>
+              <QuizList />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/quiz/attempt/:id" 
+          element={
+            <ProtectedRoute>
+              <AttemptQuiz />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/quizzes" 
+          element={
+            <ProtectedRoute>
+              <QuizList />
+            </ProtectedRoute>
+          } 
+        />
       </Routes>
     </>
   );

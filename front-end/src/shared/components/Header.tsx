@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Edit3, LogOut, User, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { validateAuth, getUserRole, clearAuth } from '@/shared/utils/auth';
 
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -10,22 +11,15 @@ const Header = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const role = localStorage.getItem('role');
+    const isValid = validateAuth();
+    const role = getUserRole();
     
-    if (token) {
-      setIsLoggedIn(true);
-      setUserRole(role);
-    } else {
-      setIsLoggedIn(false);
-      setUserRole(null);
-    }
+    setIsLoggedIn(isValid);
+    setUserRole(role);
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('role');
-    localStorage.removeItem('user');
+    clearAuth();
     setIsLoggedIn(false);
     setUserRole(null);
     navigate('/');

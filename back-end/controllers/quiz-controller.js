@@ -4,6 +4,10 @@ export const create = async (req, res) => {
   try {
     const quizData = req.body;
     
+    console.log("Received quiz data:", quizData);
+    console.log("Number of questions received:", quizData?.questions?.length || 0);
+    console.log("Questions:", quizData?.questions);
+    
     if (!req.body || Object.keys(req.body).length === 0) {
       return res.status(400).json({ 
         success: false,
@@ -13,6 +17,9 @@ export const create = async (req, res) => {
     }
     
     const quiz = await createQuiz(quizData);
+    
+    console.log("Quiz created successfully:", quiz);
+    console.log("Saved quiz questions count:", quiz.questions?.length || 0);
     
     res.status(201).json({
       success: true,

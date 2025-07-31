@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { loginSchema } from "../validations/login-validation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,8 +19,12 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+
+  // Get the intended destination from location state, or default to dashboard
+  const from = location.state?.from?.pathname || "/dashboard";
 
   const {
     register,
@@ -53,13 +57,13 @@ const Login = () => {
         console.log("Token stored:", result.data.data.token);
         console.log("Role stored:", result.data.data.user.role);
         
-        // Navigate to dashboard
-        navigate("/dashboard");
+        // Navigate to intended destination or dashboard
+        navigate(from, { replace: true });
       } else {
         // Handle login failure
         setError(result.data?.message || "Login failed. Please check your credentials.");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Login error:", error);
       
       // Handle different types of errors

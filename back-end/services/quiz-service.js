@@ -4,6 +4,10 @@ import mongoose from 'mongoose';
 // Create a new quiz
 export const createQuiz = async (quizData) => {
   try {
+    console.log("Service: Starting quiz creation");
+    console.log("Service: Quiz data received:", quizData);
+    console.log("Service: Number of questions:", quizData?.questions?.length || 0);
+    
     if (mongoose.connection.readyState !== 1) {
       throw new Error(`Database not connected. Connection state: ${mongoose.connection.readyState}`);
     }
@@ -24,8 +28,11 @@ export const createQuiz = async (quizData) => {
       throw new Error('At least one question is required');
     }
 
+    console.log("Service: Validating questions...");
     // Validate each question
     quizData.questions.forEach((question, index) => {
+      console.log(`Service: Validating question ${index + 1}:`, question);
+      
       if (!question.question || typeof question.question !== 'string') {
         throw new Error(`Question ${index + 1}: Question text is required`);
       }
@@ -47,9 +54,11 @@ export const createQuiz = async (quizData) => {
       }
     });
 
+    console.log("Service: Creating quiz model...");
     // Create new quiz instance
     const quiz = new QuizModel(quizData);
     
+    console.log("Service: Validating model...");
     // Validate the model before saving
     const validationError = quiz.validateSync();
     if (validationError) {
@@ -57,8 +66,12 @@ export const createQuiz = async (quizData) => {
       throw new Error(`Validation failed: ${errorMessages.join(', ')}`);
     }
 
+    console.log("Service: Saving to database...");
     // Save to database
     const saved = await quiz.save();
+    console.log("Service: Quiz saved successfully:", saved);
+    console.log("Service: Saved quiz questions count:", saved.questions?.length || 0);
+    
     return saved;
   } catch (err) {
     console.error("Error in createQuiz service:", err.message);
