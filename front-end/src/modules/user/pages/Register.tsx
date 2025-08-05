@@ -48,7 +48,7 @@ const Register = () => {
         setStatus(true);
         setMessage(result.data.message || "Registration failed");
       }
-    } catch (err) {
+    } catch (err: any) {
       setStatus(true);
       setMessage(err.response?.data?.message || "Registration failed");
       console.log("Register Fail", err);

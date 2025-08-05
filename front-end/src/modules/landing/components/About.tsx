@@ -8,7 +8,7 @@ const About = () => {
         <div className="text-center mb-16">
           <div className="inline-flex items-center px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-sm font-medium mb-6 border border-blue-200">
             <Target className="w-4 h-4 mr-2" />
-            About QuizMaster
+            About TestEngine
           </div>
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
             Built for Educators and
@@ -24,7 +24,7 @@ const About = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
           <div>
             <h3 className="text-2xl font-bold text-gray-900 mb-6">
-              Why Choose QuizMaster?
+              Why Choose TestEngine?
             </h3>
             <p className="text-lg text-gray-600 mb-8">
               We focus on simplicity and effectiveness. Our platform provides the essential tools you need to create engaging quizzes without overwhelming complexity.
@@ -71,7 +71,7 @@ const About = () => {
                     <Award className="w-7 h-7 text-white" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-900">QuizMaster Stats</h4>
+                    <h4 className="font-semibold text-gray-900">TestEngine Stats</h4>
                     <p className="text-sm text-gray-500">Platform Overview</p>
                   </div>
                 </div>

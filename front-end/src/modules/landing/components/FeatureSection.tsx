@@ -101,7 +101,7 @@ const FeatureSection = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h3 className="text-3xl font-bold text-gray-900 mb-6">
-                See QuizMaster in Action
+                See TestEngine in Action
               </h3>
               <p className="text-lg text-gray-600 mb-8">
                 Experience the smooth, intuitive interface that makes quiz creation and taking a breeze. From creation to completion, every step is designed for excellence.

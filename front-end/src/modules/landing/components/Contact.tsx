@@ -17,7 +17,7 @@ const Contact = () => {
             </span>
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Have questions about QuizMaster? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+            Have questions about TestEngine? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
           </p>
         </div>
 
@@ -95,7 +95,7 @@ const Contact = () => {
               <div>
                 <h3 className="text-2xl font-semibold text-gray-900 mb-6">Contact Information</h3>
                 <p className="text-lg text-gray-600 mb-8">
-                  Ready to get started with QuizMaster? We're here to help you create engaging quizzes for your audience.
+                  Ready to get started with TestEngine? We're here to help you create engaging quizzes for your audience.
                 </p>
               </div>
 
@@ -106,7 +106,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h4 className="text-lg font-semibold text-gray-900 mb-2">Email Support</h4>
-                    <p className="text-gray-600 mb-1">support@quizmaster.com</p>
+                    <p className="text-gray-600 mb-1">support@TestEngine.com</p>
                     <p className="text-sm text-gray-500">We'll respond within 24 hours</p>
                   </div>
                 </div>

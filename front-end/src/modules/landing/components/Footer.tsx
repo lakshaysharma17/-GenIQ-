@@ -17,7 +17,7 @@ const Footer = () => {
             <div className="flex items-center space-x-2 mb-4">
               <Edit3 className="h-8 w-8 text-blue-400" />
               <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                QuizMaster
+                TestEngine
               </span>
             </div>
             <p className="text-gray-400 mb-6 max-w-md">
@@ -73,7 +73,7 @@ const Footer = () => {
 
         <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm">
-            © {currentYear} QuizMaster. All rights reserved.
+            © {currentYear} TestEngine. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">
