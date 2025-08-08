@@ -261,6 +261,7 @@ This project is licensed under the ISC License.
 
 **Suyalvivek**
 - GitHub: [@Suyalvivek](https://github.com/Suyalvivek)
+- GitHub: [@lakshaysharma17](https://github.com/lakshaysharma17)
 
 ## 🙏 Acknowledgments
 
